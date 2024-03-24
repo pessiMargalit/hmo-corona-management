@@ -51,7 +51,7 @@ This FullStack system is designed for managing the Corona database of a large he
 
 1. Clone the repository:
    ```
-   git clone <repository_url>
+   git clone https://github.com/pessiMargalit/hmo-corona-management.git
    ```
 2. Navigate to the server directory:
    ```
