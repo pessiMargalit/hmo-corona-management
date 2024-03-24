@@ -16,6 +16,11 @@ This FullStack system is designed for managing the Corona database of a large he
 
 ## How to Use
 
+### Login with system password
+
+![Login](https://github.com/pessiMargalit/hmo-corona-management/blob/main/Screenshots/Login.JPG)
+
+First, in order to ensure the privacy of HMO members and security, you must log in to the system with a system password.
 ### Viewing Members
 
 ![Member List](https://github.com/pessiMargalit/hmo-corona-management/blob/main/Screenshots/MemberList.JPG)
