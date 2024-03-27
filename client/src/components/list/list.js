@@ -9,7 +9,7 @@ const List = ({ member }) => {
             <p>ID: {member.id}</p>
             <p>Name: {member.firstName} {member.lastName}</p>
             <div style={{ margin: "10px 0" }}>
-                <Link to={`/membership-card/${member.id}`}><GenericButton variant={"light"} label={"Get Member's Details"}/></Link>
+                <Link to={`/membership-card/${member.id}`}><GenericButton variant={"primary"} label={"Get Member's Details"}/></Link>
             </div>
         </div>
     );

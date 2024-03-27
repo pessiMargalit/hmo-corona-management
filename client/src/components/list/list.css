@@ -1,9 +1,10 @@
 .generic-list {
-    background-color: #005cbf;
-    color: white;
+    background-color: #ffffff;
     padding: 20px;
     margin: 10px 25vw;
     border-radius: 5px;
+    border-color: #005cbf;
+    border-style: groove;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     transition: 0.3s;
     width:50%;
