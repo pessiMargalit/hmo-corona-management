@@ -43,6 +43,8 @@ First, in order to ensure the privacy of HMO members and security, you must log 
 2. Insert member ID.
 2. Change the details in the attached form and send.
 
+### Checking how many active patients there were each day in the last month - Bonus
+![Add Member](https://github.com/pessiMargalit/hmo-corona-management/blob/main/Screenshots/Chart.JPG)
 
 ## Installation and Setup
 
