@@ -18,13 +18,13 @@ const GenericForm = ({ fields, formData, setFormData, onSubmit, onFileChange }) 
                         current[key] = value;
                     }
                     else {
-                        if(key === "vaccinationDates"){
+                        if (key === "vaccinationDates") {
                             current = current[key];
                         }
-                        else{
+                        else {
                             current[key] = { ...(current[key] || {}) };
                             current = current[key];
-    
+
                         }
                     }
                 });
@@ -41,21 +41,13 @@ const GenericForm = ({ fields, formData, setFormData, onSubmit, onFileChange }) 
             {fields.map(field => (
                 <Form.Group controlId={`form${field.name}`} key={field.name}>
                     <Form.Label>{field.label}</Form.Label>
-                    {/* <Form.Control
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        name={field.name}
-                        value={field.path ? field.path.split(/[\[\].]+/).reduce((acc, key) => acc[key], formData) : formData[field.name]}
-                        onChange={handleChange}
-                    /> */}
-
-                    {/* {field.type === 'file' ? (
+                    {field.type === 'file' ? (
                         <Form.Control
                             type={field.type}
                             name={field.name}
                             onChange={onFileChange}
                         />
-                    ) : ( */}
+                    ) : (
                         <Form.Control
                             type={field.type}
                             placeholder={field.placeholder}
@@ -63,7 +55,7 @@ const GenericForm = ({ fields, formData, setFormData, onSubmit, onFileChange }) 
                             value={field.path ? field.path.split(/[\[\].]+/).reduce((acc, key) => acc[key], formData) : formData[field.name]}
                             onChange={handleChange}
                         />
-                    {/* )} */}
+                    )}
 
                     {field.options && field.type === "select" && (
                         <Form.Control as="select" name={field.name} onChange={handleChange}>
@@ -76,7 +68,7 @@ const GenericForm = ({ fields, formData, setFormData, onSubmit, onFileChange }) 
                     )}
                 </Form.Group>
             ))}
-            {/* {formData.photo && (
+            {formData.photo && (
                 <div style={{ marginTop: '20px' }}>
                     {formData.photo && formData.photo.type && formData.photo.type.startsWith('image/') ? (
                         <Image src={URL.createObjectURL(formData.photo)} thumbnail />
@@ -84,7 +76,7 @@ const GenericForm = ({ fields, formData, setFormData, onSubmit, onFileChange }) 
                         <p>{formData.photo.name}</p>
                     )}
                 </div>
-            )} */}
+            )}
 
             <Button variant="primary" style={{ marginTop: "1vw" }} type="submit">Submit</Button>
         </Form>

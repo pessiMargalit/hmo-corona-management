@@ -49,5 +49,26 @@ const coronaDataService = {
         });
         return response.data;
     }
+    ,
+    getCountActivePatientsLastMonth: async () => {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${API_URL}/corona-data/count-active-patients-last-month`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    },
+    getCountNotVaccinatedMembers: async () => {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${API_URL}/corona-data/count-vaccinated-members`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    },
+
+
 };
 export default coronaDataService;

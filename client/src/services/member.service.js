@@ -28,6 +28,7 @@ const memberService = {
                 Authorization: `Bearer ${token}`
             }
         });
+
         return response.data;
     },
     updateMember: async (id, updatedMemberData) => {

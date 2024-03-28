@@ -12,6 +12,7 @@ const NavBar = () => {
           <li><Link to="/members">Member List</Link></li>
           <li><Link to="/member-actions">Member Actions</Link></li>
           <li><Link to="/corona-data">View All Corona Data</Link></li>
+          <li><Link to="/corona-data-summary">Corona Data Summary</Link></li>
         </ul>
       </nav>
   );

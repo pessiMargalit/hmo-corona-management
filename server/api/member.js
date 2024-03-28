@@ -19,7 +19,6 @@ router.get(`/:id`, async (req, res) => {
 
 
 router.post(`/`, async (req, res) => {
-    // Check if User exists 
     const existingMember = await memberRoute.validateById(req.body.id);
     if (existingMember) {
         return res.status(400).json({ error: 'Member already exists' });
@@ -32,7 +31,7 @@ router.post(`/`, async (req, res) => {
 
 router.put(`/:id`, async (req, res, next) => {
     user = req.body;
-    let existingUser = await memberRoute.getById(req.params.id);
+    const existingUser = await memberRoute.getById(req.params.id);
 
     if (!existingUser) {
         return res.status(404).json({ error: 'User not found' });
@@ -40,7 +39,7 @@ router.put(`/:id`, async (req, res, next) => {
 
     extractedId = existingUser._id
 
-    let result = await memberRoute.update(extractedId.toString(), user);
+    const result = await memberRoute.update(extractedId.toString(), user);
 
     if (result.error) {
         next(result.error);
@@ -53,7 +52,7 @@ router.put(`/:id`, async (req, res, next) => {
 
 router.delete(`/:id`, async (req, res, next) => {
 
-    let result = await memberRoute.delete(req.params.id);
+    const result = await memberRoute.delete(req.params.id);
     if (result.error) {
         next(result.error);
     }

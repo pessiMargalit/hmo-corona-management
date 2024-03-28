@@ -9,6 +9,25 @@ const auth = require("../middlewares/auth");
 router.use(auth);
 router.use(errorMW);
 
+// Get corona Data - Summary
+router.get('/count-active-patients-last-month', async (req, res) => {
+    try {
+        const count = await coronaDataRoute.countActivePatientsLastMonth();
+        res.status(200).send(count);
+    } catch (error) {
+        res.status(500).send({ error: 'Internal server error' });
+    }
+});
+
+router.get('/count-vaccinated-members', async (req, res) => {
+    try {
+        const count = await coronaDataRoute.countNotVaccinatedMembers();
+        res.status(200).send(count.toString());
+    } catch (error) {
+        res.status(500).send({ error: 'Internal server error' });
+    }
+});
+
 router.get('/', async (req, res) => {
     res.send(await coronaDataRoute.getAll())
 })
@@ -32,13 +51,13 @@ router.post(`/`, async (req, res) => {
 router.put(`/:memberId`, async (req, res, next) => {
     data = req.body;
     memberId = req.params.memberId;
-    let exists = await coronaDataRoute.getByMemberId(memberId);
+    const exists = await coronaDataRoute.getByMemberId(memberId);
 
     if (!exists) {
         return res.status(404).json({ error: "Member's corona data not found" });
     }
 
-    let result = await coronaDataRoute.update(memberId, data);
+    const result = await coronaDataRoute.update(memberId, data);
 
     if (result.error) {
         next(result.error);
@@ -51,7 +70,7 @@ router.put(`/:memberId`, async (req, res, next) => {
 
 router.delete(`/:memberId`, async (req, res, next) => {
 
-    let result = await coronaDataRoute.delete(req.params.memberId);
+    const result = await coronaDataRoute.delete(req.params.memberId);
     if (result.error) {
         next(result.error);
     }
@@ -59,6 +78,7 @@ router.delete(`/:memberId`, async (req, res, next) => {
         res.send(result.message);
     }
 });
+
 
 // router.use(logger);
 

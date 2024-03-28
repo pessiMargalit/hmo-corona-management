@@ -27,16 +27,23 @@ module.exports = class CoronaDataRoute {
         if (validBody.error) {
             return validBody;
         } else {
-            return await controller.update(id,data);
+            return await controller.update(id, data);
         }
     }
 
     async delete(memberId) {
         return await controller.delete(memberId);
     }
-         
-    async validateById(id){
+
+    async validateById(id) {
         return await controller.validateById(id);
     }
 
+    async countActivePatientsLastMonth() {
+        return await controller.countActivePatientsLastMonth();
+    }
+
+    async countNotVaccinatedMembers() {
+        return await controller.countNotVaccinatedMembers();
+    }
 }

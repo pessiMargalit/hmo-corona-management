@@ -1,6 +1,7 @@
 const myModule = require("../models/member.model");
 const validMember = myModule.validateMember;
-
+const CoronaDataController = require("../controllers/coroneData.controller");
+const coronaDataController = new CoronaDataController()
 const MemberController = require("../controllers/member.controller");
 const controller = new MemberController()
 
@@ -28,15 +29,21 @@ module.exports = class MemberRoute {
         if (validBody.error) {
             return validBody;
         } else {
-            return await controller.update(id,data);
+            return await controller.update(id, data);
         }
     }
 
     async delete(id) {
-        return await controller.delete(id);
+        const res = await controller.delete(id)
+        try { coronaDataController.delete(id); }
+        catch {
+            return res
+        }
+
+        return res;
     }
-    
-    async validateById(id){
+
+    async validateById(id) {
         return await controller.validateById(id);
     }
 

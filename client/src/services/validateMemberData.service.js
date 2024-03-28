@@ -10,9 +10,9 @@ const memberSchema = Joi.object({
         housenumber: Joi.string().required(),
     }), 
     birthDate: Joi.date().required(),
-    phone: Joi.string().regex(/^\d{9,10}$/).required().messages({ 'string.pattern.base': 'Phon number must contain 9 or 10 digits' }),
-    mobile: Joi.string().regex(/^\d{10}$/).messages({ 'string.pattern.base': 'Mobile must contain exactly 10 digits' }).allow(''),
-    // photo: Joi.string()
+    phone: Joi.string().regex(/^0\d{1,2}-?\d{7}$/).required().messages({ 'string.pattern.base': 'Phone number must be in Israeli number phon' }),
+    mobile: Joi.string().regex(/^05\d-?\d{7}$/).messages({ 'string.pattern.base': 'Mobile number must be in Israeli number phon' }).allow(null, ''),
+    photo: Joi.string().allow(null, '')
 });
 
 

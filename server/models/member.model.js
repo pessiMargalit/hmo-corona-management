@@ -16,7 +16,7 @@ const memberSchema = new mongoose.Schema({
     birthDate: { type: Date, required: true },
     phone: { type: String, required: true },
     mobile: { type: String, required: false },
-    // photo: { type: String, required: false },
+    photo: { type: String, required: false }, 
 }, { collection: "members" });
 
 const MemberModel = mongoose.model("Member", memberSchema);
@@ -33,8 +33,8 @@ const validateMember = (memberData) => {
         }),
         birthDate: Joi.date().required(),
         phone: Joi.string().regex(/^\d{9,10}$/).required(),
-        mobile: Joi.string().regex(/^\d{10}$/),
-            // photo: Joi.string()
+        mobile: Joi.string().regex(/^\d{10}$/).allow(null, ''),
+        photo: Joi.string().allow(null,'')
     });
     return schema.validate(memberData);
 };

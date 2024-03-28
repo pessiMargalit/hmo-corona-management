@@ -18,7 +18,7 @@ const AddMemberPage = () => {
         birthDate: '',
         phone: '',
         mobile: '',
-        // photo: null
+        photo: null
     });
     const fieldsConfig = [
         { name: 'id', label: 'ID', type: 'text', placeholder: 'ID' },
@@ -30,7 +30,7 @@ const AddMemberPage = () => {
         { name: 'birthDate', label: 'Birth Date', type: 'date', placeholder: '' },
         { name: 'phone', label: 'Phone', type: 'text', placeholder: 'Phone' },
         { name: 'mobile', label: 'Mobile', type: 'text', placeholder: 'Mobile' },
-        // { name: 'photo', label: 'Photo', type: 'file' }
+        { name: 'photo', label: 'Photo', type: 'file' }
     ];
     const [errors, setErrors] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -48,22 +48,19 @@ const AddMemberPage = () => {
             return;
         }
         setErrors({});
+        const formData = new FormData();
+        Object.entries(newMemberData).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+
         await memberService.addMember(newMemberData);
         console.log('Form submitted:', newMemberData);
         const timer = setTimeout(() => {
-            navigate('/'); 
+            navigate('/');
         }, 5000);
 
         return () => clearTimeout(timer);
     };
-
-    // const handleFileChange = (e) => {
-    //     const file = e.target.files[0];
-    //     setNewMemberData(prevState => ({
-    //         ...prevState,
-    //         photo: file
-    //     }));
-    // };
 
     return (
         <div>
@@ -73,8 +70,8 @@ const AddMemberPage = () => {
                 formData={newMemberData}
                 setFormData={setNewMemberData}
                 onSubmit={handleSubmit}
-                // onFileChange={handleFileChange}
-            />
+                handleFileChange={(e) => setNewMemberData({ ...newMemberData, photo: e.target.files[0] })}
+                />
             <ErrorModal show={showModal} message={Object.values(errors).join(", ")} onClose={() => setShowModal(false)} />        </div>
     );
 };

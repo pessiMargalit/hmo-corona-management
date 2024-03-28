@@ -14,7 +14,7 @@ module.exports = class CoronaDataController {
     async getByMemberId(memberId) {
         const coronaData = await CoronaDataModel.findOne({ memberId: memberId });
         if (!coronaData) {
-            return { error: 'Member not found'};
+            return { error: 'Member not found' };
         }
         return { _id: coronaData._id.toString(), ...coronaData.toObject() };
 
@@ -33,15 +33,15 @@ module.exports = class CoronaDataController {
             { new: true }
         );
         if (!coronaData) {
-            return { error: "Member's corona data not found"};
+            return { error: "Member's corona data not found" };
         }
         return { _id: coronaData._id.toString(), ...coronaData.toObject() };
     }
-    
+
     async delete(memberId) {
         const coronaData = await CoronaDataModel.findOneAndDelete({ memberId: memberId });
         if (!coronaData) {
-            return { error: "Member's corona data not found"};
+            return { error: "Member's corona data not found" };
         }
         return { _id: coronaData._id.toString(), ...coronaData.toObject() };
     }
@@ -49,6 +49,51 @@ module.exports = class CoronaDataController {
     async validateById(id) {
         let result = await CoronaDataModel.findOne({ memberId: id });
         return result;
+    }
+
+    async countActivePatientsLastMonth() {
+        try {
+            const currentDate = new Date();
+            const thirtyDaysAgo = new Date(currentDate);
+            thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+
+            const allCoronaData = await this.getAll();
+
+            const filteredData = allCoronaData.filter(coronaData => {
+                const positiveResultDate = new Date(coronaData.positiveResultDate);
+                return positiveResultDate >= thirtyDaysAgo && positiveResultDate <= currentDate;
+            });
+
+
+            const result = filteredData.reduce((countsByDay, coronaData) => {
+                const dateKey = coronaData.positiveResultDate.toISOString().split('T')[0];
+                countsByDay[dateKey] = (countsByDay[dateKey] || 0) + 1;
+                return countsByDay;
+            }, {});
+
+            return result;
+        } catch (error) {
+            throw new Error('Error counting active patients in the last 30 days: ' + error.message);
+        }
+    }
+
+
+
+
+    async countNotVaccinatedMembers() {
+        try {
+            const allCoronaData = await this.getAll();
+            let nonVaccinatedMembersCount = 0;
+            allCoronaData.forEach(coronaData => {
+                if (!coronaData.vaccinationDates || coronaData.vaccinationDates.length === 0) {
+                    nonVaccinatedMembersCount++;
+                }
+            });
+            return nonVaccinatedMembersCount;
+
+        } catch (error) {
+            return { error: 'Error counting vaccinated members: ' + error.message };
+        }
     }
 
 }
