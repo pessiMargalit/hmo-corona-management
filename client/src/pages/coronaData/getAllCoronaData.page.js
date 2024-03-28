@@ -3,11 +3,13 @@ import coronaDataService from '../../services/coronaData.service';
 import MemberCard from '../../components/memberCard/memberCard';
 import ErrorModal from '../../components/errorModal/errorModal';
 import GenericCard from '../../components/genericCard';
+import { useNavigate } from 'react-router-dom';
 
 const GetAllcoronaDataPage = () => {
     const [coronaData, setcoronaData] = useState([]);
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchMembers() {
@@ -24,6 +26,12 @@ const GetAllcoronaDataPage = () => {
             }
         }
         fetchMembers();
+        const timer = setTimeout(() => {
+            navigate('/'); 
+        }, 5000);
+
+        return () => clearTimeout(timer);
+
     }, [coronaData]);
 
     return (

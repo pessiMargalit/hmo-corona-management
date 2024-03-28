@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ErrorModal from '../../components/errorModal/errorModal';
 import GenericButton from '../../components/genericButton';
 import GenericForm from '../../components/genericForm';
@@ -16,6 +17,8 @@ const AddCoronaDataPage = () => {
 
     const [errors, setErrors] = useState({});
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
+
     const fieldsConfig = [
         {
             name: 'memberId',
@@ -63,40 +66,47 @@ const AddCoronaDataPage = () => {
             }));
         }
     };
-    
 
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-            const { error } = validateCoronaData(newCoronaData);
-            if (error) {
-                setErrors(error.details.reduce((acc, curr) => {
-                    acc[curr.path[0]] = curr.message;
-                    return acc;
-                }, {}));
-                setShowModal(true);
-                return;
-            }
-            setErrors({});
-            await coronaDatasService.addCoronaData(newCoronaData);
-            console.log('Form submitted:', newCoronaData);
-        };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { error } = validateCoronaData(newCoronaData);
+        if (error) {
+            setErrors(error.details.reduce((acc, curr) => {
+                acc[curr.path[0]] = curr.message;
+                return acc;
+            }, {}));
+            setShowModal(true);
+            return;
+        }
+        setErrors({});
+        await coronaDatasService.addCoronaData(newCoronaData);
+        console.log('Form submitted:', newCoronaData);
+        const timer = setTimeout(() => {
+            navigate('/');
+        }, 5000);
 
+        return () => clearTimeout(timer);
 
-        return (
-            <div>
-                <h1>Add Corona Data</h1>
-                <div style={{ width: "50%", margin: "auto" }}>
-                    <GenericForm
-                        fields={fieldsConfig}
-                        formData={newCoronaData}
-                        setFormData={setNewCoronaData}
-                        onSubmit={handleSubmit}
-                    />
-                    <GenericButton style={{ margin: "1vh" }} variant="secondary" onClick={addVaccinationDate} label={"Add Vaccination Date"} />
-                </div>
-                <ErrorModal show={showModal} message={errors} onClose={() => setShowModal(false)} />
-            </div>
-        );
     };
 
-    export default AddCoronaDataPage;
+
+    return (
+        <div>
+            <h1>Add Corona Data</h1>
+            <div style={{ width: "50%", margin: "auto" }}>
+                <GenericForm
+                    fields={fieldsConfig}
+                    formData={newCoronaData}
+                    setFormData={setNewCoronaData}
+                    onSubmit={handleSubmit}
+                />
+                <GenericButton style={{ margin: "1vh" }} variant="secondary" onClick={addVaccinationDate} label={"Add Vaccination Date"} />
+            </div>
+            <ErrorModal show={showModal} message={Object.keys(errors).map((key, index) => (
+                <div key={index}>{errors[key]}</div>
+            ))} onClose={() => setShowModal(false)} />
+        </div>
+    );
+};
+
+export default AddCoronaDataPage;

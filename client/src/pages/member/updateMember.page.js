@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ErrorModal from '../../components/errorModal/errorModal';
 import GenericForm from '../../components/genericForm';
 import memberService from '../../services/member.service';
@@ -11,11 +11,11 @@ const UpdateMemberPage = () => {
         id: id,
         firstName: '',
         lastName: '',
-        address: { 
+        address: {
             city: '',
             street: '',
             housenumber: ''
-        },    
+        },
         birthDate: '',
         phone: '',
         mobile: ''
@@ -34,6 +34,7 @@ const UpdateMemberPage = () => {
 
     const [errors, setErrors] = useState({});
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
 
     const formattedDate = (date) => {
         if (date) {
@@ -52,6 +53,7 @@ const UpdateMemberPage = () => {
             } catch (error) {
                 setErrors("An error occurred. Please try again later");
                 setShowModal(true);
+                return;
             }
         }
         fetchMember();
@@ -72,6 +74,13 @@ const UpdateMemberPage = () => {
         try {
             await memberService.updateMember(id, memberData);
             console.log('Member updated successfully');
+            const timer = setTimeout(() => {
+                navigate('/');
+            }, 5000);
+    
+            return () => clearTimeout(timer);
+    
+    
         } catch (error) {
             setErrors("An error occurred. Please try again later");
             setShowModal(true);

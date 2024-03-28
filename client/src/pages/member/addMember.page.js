@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { validateMemberData } from '../../services/validateMemberData.service';
 import memberService from '../../services/member.service'
 import ErrorModal from '../../components/errorModal/errorModal';
@@ -34,7 +34,7 @@ const AddMemberPage = () => {
     ];
     const [errors, setErrors] = useState({});
     const [showModal, setShowModal] = useState(false);
-    // const history = useHistory();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,7 +50,11 @@ const AddMemberPage = () => {
         setErrors({});
         await memberService.addMember(newMemberData);
         console.log('Form submitted:', newMemberData);
-        // history.push('/member');
+        const timer = setTimeout(() => {
+            navigate('/'); 
+        }, 5000);
+
+        return () => clearTimeout(timer);
     };
 
     // const handleFileChange = (e) => {

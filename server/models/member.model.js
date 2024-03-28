@@ -15,7 +15,7 @@ const memberSchema = new mongoose.Schema({
     address: addressSchema,
     birthDate: { type: Date, required: true },
     phone: { type: String, required: true },
-    mobile: { type: String, required: true },
+    mobile: { type: String, required: false },
     // photo: { type: String, required: false },
 }, { collection: "members" });
 
@@ -23,18 +23,18 @@ const MemberModel = mongoose.model("Member", memberSchema);
 
 const validateMember = (memberData) => {
     const schema = Joi.object({
-        id: Joi.string().required(),
+        id: Joi.string().regex(/^\d{9}$/).required(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         address: Joi.object({
             city: Joi.string().required(),
             street: Joi.string().required(),
-            housenumber: Joi.string().required()
+            housenumber: Joi.string().required(),
         }),
         birthDate: Joi.date().required(),
-        phone: Joi.string().required(),
-        mobile: Joi.string().required(),
-        // photo: Joi.string()
+        phone: Joi.string().regex(/^\d{9,10}$/).required(),
+        mobile: Joi.string().regex(/^\d{10}$/),
+            // photo: Joi.string()
     });
     return schema.validate(memberData);
 };

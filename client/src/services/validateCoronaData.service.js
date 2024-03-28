@@ -11,7 +11,10 @@ const coronaDataSchema = Joi.object({
     memberId: Joi.string().required(),
     vaccinationDates: Joi.array().items(vaccinationDateSchema).max(4).required(),
     recoveryDate: Joi.date().required(),
-    positiveResultDate: Joi.date().required()
+    positiveResultDate: Joi.date().required().less(Joi.ref('recoveryDate')).messages({
+        'date.base': 'Positive result date must be a valid date',
+        'date.less': 'Positive result date must be before recovery date'
+    })
 });
 
 const validateCoronaData = (data) => {

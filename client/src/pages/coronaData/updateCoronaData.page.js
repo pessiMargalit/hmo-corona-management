@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ErrorModal from '../../components/errorModal/errorModal';
 import GenericButton from '../../components/genericButton';
 import GenericForm from '../../components/genericForm';
@@ -17,6 +17,7 @@ const UpdateCoronaDataPage = () => {
     });
     const [errors, setErrors] = useState({});
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
     const isLoading = useRef(false)
     const fieldsConfig = [
         {
@@ -72,14 +73,15 @@ const UpdateCoronaDataPage = () => {
                 const data = await coronaDatasService.getCoronaDataByMemberId(memberId);
                 data.recoveryDate = data.recoveryDate ? formattedDate(data.recoveryDate) : '';
                 data.positiveResultDate = data.positiveResultDate ? formattedDate(data.positiveResultDate) : '';
-                console.log(data.vaccinationDates);
                 data.vaccinationDates.forEach(vaccinationDate => {
                     vaccinationDate.date = vaccinationDate.date ? formattedDate(vaccinationDate.date) : '';
                     delete vaccinationDate._id;
                 });
                 setUpdatedCoronaData(data);
             } catch (error) {
-                console.error("Failed to fetch corona data", error);
+                setErrors(["Failed to fetch corona data"])
+                setShowModal(true);
+                return;
             }
         };
 
@@ -110,7 +112,16 @@ const UpdateCoronaDataPage = () => {
         try {
             await coronaDatasService.updateCoronaData(memberId, updatedCoronaData);
             console.log('Corona data updated successfully', updatedCoronaData);
+            const timer = setTimeout(() => {
+                navigate('/');
+            }, 5000);
+
+            return () => clearTimeout(timer);
+
+
         } catch (error) {
+            setErrors(['Error updating corona data'])
+            setShowModal(true);
             console.error('Error updating corona data:', error);
         }
     };
